@@ -30,7 +30,7 @@ jobs:
       run: source tools/ci.sh && ci_esp32_build
 
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v3.0.0
+      uses: actions/upload-artifact@v2
       with:
           name: micropython
           path: /home/runner/work/micropython/micropython/ports/esp32/build-GENERIC_C3/*.bin
