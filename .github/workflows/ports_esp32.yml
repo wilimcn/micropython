@@ -33,12 +33,12 @@ jobs:
       uses: actions/download-artifact@v3.0.0
       with:
           name: micropython
-          path: ./**/*.bin
+          path: /home/runner/work/micropython/micropython/ports/esp32/build-GENERIC_C3/*.bin
     - name: Upload firmware to WeTransfer
       id: wetransfer
       if: env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
-        ./transfer wet /home/runner/work/micropython/micropython/ports/esp32/build-GENERIC/*.bin
+        ./transfer wet /home/runner/work/micropython/micropython/ports/esp32/build-GENERIC_C3/*.bin
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
         echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
