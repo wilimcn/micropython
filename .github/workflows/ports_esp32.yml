@@ -11,6 +11,18 @@ on:
       - 'lib/**'
       - 'drivers/**'
       - 'ports/esp32/**'
+env:
+  REPO_URL: https://github.com/micropython/micropython
+  REPO_BRANCH: master
+  #FEEDS_CONF: feeds.conf.default
+  #CONFIG_FILE: .config
+  #DIY_P1_SH: diy-part1.sh
+  #DIY_P2_SH: diy-part2.sh
+  UPLOAD_BIN_DIR: false
+  SSH_ACTIONS: true
+  UPLOAD_WETRANSFER: true
+  UPLOAD_RELEASE: false
+  TZ: Asia/Shanghai
 
 jobs:
 
@@ -22,3 +34,11 @@ jobs:
       run: source tools/ci.sh && ci_esp32_idf43_setup
     - name: Build
       run: source tools/ci.sh && ci_esp32_build
+    - name: Upload firmware to WeTransfer
+      id: wetransfer
+      if: env.UPLOAD_WETRANSFER == 'true' && !cancelled()
+      run: |
+        curl -fsSL git.io/file-transfer | sh
+        ./transfer wet -s -p 16 --no-progress ${micropython} 2>&1 | tee wetransfer.log
+        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
+        echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
