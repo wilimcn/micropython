@@ -2,9 +2,10 @@ name: esp32 port
 
 on:
   push:
+
+  pull_request:
     branches:
     - test_ngork
-  pull_request:
     paths:
       - '.github/workflows/*.yml'
       - 'tools/**'
