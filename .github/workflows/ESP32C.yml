@@ -2,8 +2,7 @@ name: esp32 port
 
 on:
   push:
-    branches:
-    - test_ngork
+
   pull_request:
 
     paths:
